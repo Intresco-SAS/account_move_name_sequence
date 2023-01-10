@@ -18,6 +18,7 @@
                     required="1"
                     context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': (code or 'UNKNOWN') + '/%%(range_year)s/'}"
                 />
+                <field name="out_sequence"/>
             </field>
             <field name="refund_sequence" position="after">
                 <field

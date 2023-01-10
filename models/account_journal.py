@@ -33,6 +33,13 @@ class AccountJournal(models.Model):
     )
     # Redefine the default to True as <=v13.0
     refund_sequence = fields.Boolean(default=True)
+    out_sequence = fields.Many2one(
+        "ir.sequence",
+        string="Secuencia salida",
+        copy=False,
+        check_company=True,
+        domain="[('company_id', '=', company_id)]",
+    )
 
     @api.constrains("refund_sequence_id", "sequence_id")
     def _check_journal_sequence(self):
