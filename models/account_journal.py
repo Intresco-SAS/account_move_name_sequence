@@ -40,6 +40,14 @@ class AccountJournal(models.Model):
         check_company=True,
         domain="[('company_id', '=', company_id)]",
     )
+    debit_sequence_id = fields.Many2one(
+        "ir.sequence",
+        string="Debit Note Entry Sequence",
+        copy=False,
+        check_company=True,
+        domain="[('company_id', '=', company_id)]",
+    )
+    debit_sequence = fields.Boolean(default=True)
 
     @api.constrains("refund_sequence_id", "sequence_id")
     def _check_journal_sequence(self):

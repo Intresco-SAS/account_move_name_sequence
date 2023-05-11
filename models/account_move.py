@@ -47,6 +47,7 @@ class AccountMove(models.Model):
                 and move.journal_id
                 and move.journal_id.sequence_id
             ):
+                #Nota de Crédito
                 if (
                     move.move_type in ("out_refund", "in_refund")
                     and move.journal_id.type in ("sale", "purchase")
@@ -54,8 +55,19 @@ class AccountMove(models.Model):
                     and move.journal_id.refund_sequence_id
                 ):
                     seq = move.journal_id.refund_sequence_id
-                elif payment == 'outbound': # Pagos Directos 
+                #Nota de Débito
+                elif (
+                    move.move_type == "out_invoice"
+                    and move.is_debit_note == True
+                    and move.journal_id.type == "sale"
+                    and move.journal_id.debit_sequence
+                    and move.journal_id.debit_sequence_id
+                ):
+                    seq = move.journal_id.debit_sequence_id
+                # Pagos Salientes - Directos (Modulo de Pagos)
+                elif payment == 'outbound':
                     seq = move.journal_id.out_sequence
+                # Pagos Salientes 
                 elif move.move_type == 'entry' and move.payment_id.payment_type == 'outbound':
                     seq = move.journal_id.out_sequence
                 else:

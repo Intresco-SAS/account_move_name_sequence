@@ -13,21 +13,14 @@
         <field name="inherit_id" ref="account.view_account_journal_form" />
         <field name="arch" type="xml">
             <field name="refund_sequence" position="before">
-                <field
-                    name="sequence_id"
-                    required="1"
-                    context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': (code or 'UNKNOWN') + '/%%(range_year)s/'}"
-                />
-                <field name="out_sequence"/>
-            </field>
-            <field name="refund_sequence" position="after">
-                <field
-                    name="refund_sequence_id"
-                    attrs="{'invisible': ['|', ('type', 'not in', ('sale', 'purchase')), ('refund_sequence', '=', False)],
-                            'required': [('type', 'in', ('sale', 'purchase')), ('refund_sequence', '=', True)]}"
-                    context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': 'R' + (code or 'UNKNOWN') + '/%%(range_year)s/'}"
-                />
-            </field>
+            <field name="sequence_id" string= "Secuencia del asiento" required="1" context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': (code or 'UNKNOWN') + '/%(range_year)s/'}"/>
+            <field name="out_sequence" attrs="{'invisible': [('type', 'not in', ('bank', 'cash'))]}"/>
+        </field>
+        <field name="refund_sequence" position="after">
+            <field name="refund_sequence_id" attrs="{'invisible': ['|', ('type', 'not in', ('sale', 'purchase')), ('refund_sequence', '=', False)],                             'required': [('type', 'in', ('sale', 'purchase')), ('refund_sequence', '=', True)]}" context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': 'R' + (code or 'UNKNOWN') + '/%(range_year)s/'}"/>
+            <field name="debit_sequence"/>
+            <field name="debit_sequence_id" attrs="{'invisible': ['|', ('type', 'not in', ('sale', 'purchase')), ('refund_sequence', '=', False)],                             'required': [('type', 'in', ('sale', 'purchase')), ('debit_sequence', '=', True)]}" context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': 'R' + (code or 'UNKNOWN') + '/%(range_year)s/'}"/>
+        </field>
         </field>
     </record>
 
