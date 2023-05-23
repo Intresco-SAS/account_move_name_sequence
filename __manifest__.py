@@ -15,7 +15,7 @@
     "maintainers": ["alexis-via", "moylop260", "frahikLV"],
     "website": "https://github.com/OCA/account-financial-tools",
     "depends": [
-        "account",
+        "account",'account_debit_note',
     ],
     "demo": [
         "demo/ir_sequence_demo.xml",
@@ -23,6 +23,7 @@
     "data": [
         "views/account_journal.xml",
         "views/account_move.xml",
+        "views/account_payment.xml",
         "security/ir.model.access.csv",
     ],
     "post_init_hook": "create_journal_sequences",

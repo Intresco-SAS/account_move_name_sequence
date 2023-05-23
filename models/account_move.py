@@ -3,6 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
+import logging
+_logger=logging.getLogger(__name__)
 
 
 class AccountMove(models.Model):
@@ -26,17 +28,26 @@ class AccountMove(models.Model):
 
     @api.depends("state", "journal_id", "date")
     def _compute_name_by_sequence(self):
+
         for move in self:
+            payment = False
+            try:
+                payment = self.env.context['default_payment_type']
+            except:
+                pass
+            
             name = move.name or "/"
             # I can't use posted_before in this IF because
             # posted_before is set to True in _post() at the same
             # time as state is set to "posted"
             if (
+                
                 move.state == "posted"
                 and (not move.name or move.name == "/")
                 and move.journal_id
                 and move.journal_id.sequence_id
             ):
+                #Nota de Crédito
                 if (
                     move.move_type in ("out_refund", "in_refund")
                     and move.journal_id.type in ("sale", "purchase")
@@ -44,6 +55,21 @@ class AccountMove(models.Model):
                     and move.journal_id.refund_sequence_id
                 ):
                     seq = move.journal_id.refund_sequence_id
+                #Nota de Débito
+                elif (
+                    move.move_type == "out_invoice"
+                    and move.is_debit_note == True
+                    and move.journal_id.type == "sale"
+                    and move.journal_id.debit_sequence
+                    and move.journal_id.debit_sequence_id
+                ):
+                    seq = move.journal_id.debit_sequence_id
+                # Pagos Salientes - Directos (Modulo de Pagos)
+                elif payment == 'outbound':
+                    seq = move.journal_id.out_sequence
+                # Pagos Salientes 
+                elif move.move_type == 'entry' and move.payment_id.payment_type == 'outbound':
+                    seq = move.journal_id.out_sequence
                 else:
                     seq = move.journal_id.sequence_id
                 # next_by_id(date) only applies on ir.sequence.date_range selection
