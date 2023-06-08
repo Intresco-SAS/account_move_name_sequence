@@ -23,7 +23,6 @@
     "data": [
         "views/account_journal.xml",
         "views/account_move.xml",
-        "views/account_payment.xml",
         "security/ir.model.access.csv",
     ],
     "post_init_hook": "create_journal_sequences",
