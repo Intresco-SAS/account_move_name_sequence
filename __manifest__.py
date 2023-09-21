@@ -7,7 +7,7 @@
 
 {
     "name": "Account Move Number Sequence",
-    "version": "14.0.1.4.0",
+    "version": "15.0.1.2.2",
     "category": "Accounting",
     "license": "AGPL-3",
     "summary": "Generate journal entry number from sequence",
@@ -15,10 +15,7 @@
     "maintainers": ["alexis-via", "moylop260", "frahikLV"],
     "website": "https://github.com/OCA/account-financial-tools",
     "depends": [
-        "account",'account_debit_note',
-    ],
-    "demo": [
-        "demo/ir_sequence_demo.xml",
+        "account",
     ],
     "data": [
         "views/account_journal.xml",
