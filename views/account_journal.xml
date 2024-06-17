@@ -15,7 +15,6 @@
             <field name="refund_sequence" position="before">
             <field name="sequence_id" 
                    string= "Secuencia del asiento" 
-                   required="1" 
                    context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': (code or 'UNKNOWN') + '/%%(range_year)s/'}"/>
             <field name="out_sequence" 
                    attrs="{'invisible': [('type', 'not in', ('bank', 'cash'))]}"/>
@@ -26,9 +25,10 @@
                    attrs="{'invisible': ['|', ('type', 'not in', ('sale', 'purchase')), ('refund_sequence', '=', False)],                             'required': [('type', 'in', ('sale', 'purchase')), ('refund_sequence', '=', True)]}" 
                    context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': 'R' + (code or 'UNKNOWN') + '/%%(range_year)s/'}"/>
             
-            <field name="debit_sequence"/>
+            <field name="debit_sequence" string= "Secuencia Nota Débito dedicada"
+                   attrs="{'invisible': [('type', 'not in', ('sale', 'purchase'))],                             'required': [('type', 'in', ('sale', 'purchase'))]}"  />
             
-            <field name="debit_sequence_id" 
+            <field name="debit_sequence_id" string= "Secuencia Nota Débito"
                    attrs="{'invisible': ['|', ('type', 'not in', ('sale', 'purchase')), ('refund_sequence', '=', False)],                             'required': [('type', 'in', ('sale', 'purchase')), ('debit_sequence', '=', True)]}" 
                    context="{'default_name': name, 'default_company_id': company_id, 'default_implementation': 'no_gap', 'default_padding': 4, 'default_use_date_range': True, 'default_prefix': 'R' + (code or 'UNKNOWN') + '/%%(range_year)s/'}"/>
         </field>
