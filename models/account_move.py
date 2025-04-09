@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class AccountMove(models.Model):
@@ -53,6 +54,11 @@ class AccountMove(models.Model):
                     seq = move.journal_id.refund_sequence_id
                 # Pagos Salientes - Directos (Modulo de Pagos)
                 elif payment == 'outbound':
+                    if not move.journal_id.out_sequence:
+                        raise UserError(
+                            "El diario '%s' no tiene una secuencia de salida configurada."
+                            % move.journal_id.name
+                        )
                     seq = move.journal_id.out_sequence
                 #Nota de Débito
                 elif (
@@ -65,6 +71,11 @@ class AccountMove(models.Model):
                     seq = move.journal_id.debit_sequence_id
                 # Pagos Salientes 
                 elif move.move_type == 'entry' and move.payment_id.payment_type == 'outbound':
+                    if not move.journal_id.out_sequence:
+                        raise UserError(
+                            "El diario '%s' no tiene una secuencia de salida configurada."
+                            % move.journal_id.name
+                        )
                     seq = move.journal_id.out_sequence
                 else:
                     seq = move.journal_id.sequence_id
